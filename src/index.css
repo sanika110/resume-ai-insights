@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 @layer base {
   :root {
     --background: 220 20% 97%;
@@ -95,6 +97,33 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-8;
+  }
+  .section-header {
+    @apply text-center mb-10 sm:mb-14 lg:mb-16;
+  }
+  .section-title {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4;
+  }
+  .section-subtitle {
+    @apply text-muted-foreground text-sm sm:text-base max-w-lg mx-auto;
+  }
+  .page-header {
+    @apply text-center mb-8 sm:mb-12;
+  }
+  .page-title {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3;
+  }
+  .page-subtitle {
+    @apply text-muted-foreground text-sm sm:text-base;
+  }
 }
 
 @layer utilities {
@@ -116,5 +145,12 @@
     background: hsl(var(--glass) / 0.85);
     backdrop-filter: blur(24px);
     border: 1px solid hsl(var(--border) / 0.6);
+  }
+  .hero-glow {
+    background: radial-gradient(
+      ellipse 60% 50% at 50% 0%,
+      hsl(var(--gradient-start) / 0.08) 0%,
+      transparent 70%
+    );
   }
 }
