@@ -1,3 +1,4 @@
-# Welcome to your Lovable project
+#   Welcome to AI resume analyzer
+
 
 TODO: Document your project here
