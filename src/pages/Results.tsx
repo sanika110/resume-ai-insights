@@ -9,42 +9,6 @@ import ScoreCard from "@/components/ScoreCard";
 import SuggestionList from "@/components/SuggestionList";
 import SectionChecklist from "@/components/SectionChecklist";
 
-const mockResult = {
-  score: 74,
-  strengths: [
-    "Good project structure",
-    "Clear skills section",
-    "Good formatting",
-    "Professional contact details",
-  ],
-  weaknesses: [
-    "Add measurable achievements",
-    "Improve summary section",
-    "Add more technical keywords",
-    "Quantify project impact",
-  ],
-  suggestions: [
-    "Include metrics like 'increased revenue by 20%'",
-    "Add a professional summary at the top",
-    "Use industry-specific keywords",
-    "Keep to 1-2 pages maximum",
-  ],
-  missing_skills: [
-    "Docker",
-    "CI/CD",
-    "Unit Testing",
-    "Cloud Services (AWS/GCP)",
-    "System Design",
-  ],
-  sections: [
-    { name: "Summary", present: false },
-    { name: "Skills", present: true },
-    { name: "Projects", present: true },
-    { name: "Experience", present: true },
-    { name: "Education", present: true },
-  ],
-};
-
 const containerVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.08 } },
@@ -85,8 +49,19 @@ const Results = () => {
     );
   }
 
-  const data = mockResult;
+  const data = JSON.parse(
+ localStorage.getItem("resumeResult") || "{}"
+);
 
+if(!data.score){
+
+ return (
+  <div className="min-h-screen flex items-center justify-center">
+   <p>No analysis found. Please upload resume again.</p>
+  </div>
+ );
+
+}
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />

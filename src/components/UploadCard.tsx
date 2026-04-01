@@ -21,7 +21,7 @@ const UploadCard = ({ onFileSelect, onAnalyze, isAnalyzing, hasFile }: UploadCar
   const [fileName, setFileName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const validateAndSet = (file: File) => {
+  const validateAndSet = useCallback((file: File) => {
     if (!ACCEPTED.includes(file.type)) {
       setError("Please upload PDF or DOCX");
       setFileName("");
@@ -29,15 +29,21 @@ const UploadCard = ({ onFileSelect, onAnalyze, isAnalyzing, hasFile }: UploadCar
     }
     setError("");
     setFileName(file.name);
+    console.log(file); 
     onFileSelect(file);
-  };
+ }, [onFileSelect]);
 
   const handleDrop = useCallback((e: DragEvent) => {
-    e.preventDefault();
-    setDragOver(false);
-    const file = e.dataTransfer.files[0];
-    if (file) validateAndSet(file);
-  }, []);
+ e.preventDefault();
+ setDragOver(false);
+
+ const file = e.dataTransfer.files[0];
+
+ if (file){
+  validateAndSet(file);
+ }
+
+}, [validateAndSet]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -12,21 +12,47 @@ const UploadPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const navigate = useNavigate();
 
-  const handleAnalyze = () => {
-    if (!file) return;
-    setIsAnalyzing(true);
-    setProgress(0);
-    const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) {
-          clearInterval(interval);
-          navigate("/results");
-          return 100;
-        }
-        return p + 2;
-      });
-    }, 60);
-  };
+  const handleAnalyze = async () => {
+
+ if (!file) return;
+
+ setIsAnalyzing(true);
+ setProgress(10);
+
+ const formData = new FormData();
+ formData.append("file", file);
+
+ try{
+
+  const response = await fetch(
+   "http://127.0.0.1:8000/analyze",
+   {
+    method:"POST",
+    body:formData
+   }
+  );
+
+  setProgress(70);
+
+  const data = await response.json();
+
+  setProgress(100);
+
+  // store result for results page
+  localStorage.setItem(
+   "resumeResult",
+   JSON.stringify(data)
+  );
+
+  navigate("/results");
+
+ }catch(error){
+
+  console.log(error);
+  setIsAnalyzing(false);
+
+ }
+};
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
