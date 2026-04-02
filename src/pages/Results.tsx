@@ -50,18 +50,22 @@ const Results = () => {
   }
 
   const data = JSON.parse(
- localStorage.getItem("resumeResult") || "{}"
-);
+    localStorage.getItem("resumeResult") || "{}"
+  );
 
-if(!data.score){
+  const jobMatch = data?.job_match || {};
+  const roleMissing = data?.role_missing_skills || {};
 
- return (
-  <div className="min-h-screen flex items-center justify-center">
-   <p>No analysis found. Please upload resume again.</p>
-  </div>
- );
 
-}
+  if (!data.score) {
+
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>No analysis found. Please upload resume again.</p>
+      </div>
+    );
+
+  }
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
@@ -121,7 +125,93 @@ if(!data.score){
               <SuggestionList title="Actionable Tips" items={data.suggestions} variant="improvement" />
             </motion.div>
             <motion.div variants={itemVariants}>
+            <SuggestionList 
+              title="AI Suggestions" 
+              items={data.ai_suggestions || []} 
+              variant="improvement" />
+            </motion.div>
+            <motion.div variants={itemVariants}>
               <SuggestionList title="Missing Skills" items={data.missing_skills} variant="skill" />
+            </motion.div>
+            <motion.div variants={itemVariants} className="sm:col-span-2">
+
+              <div className="glass-card p-6 rounded-xl">
+
+                <h2 className="text-lg font-semibold mb-4">
+                  Job Role Match
+                </h2>
+
+                {Object.entries(jobMatch).map(([role, score]) => (
+
+                  <div key={role} className="mb-4">
+
+                    <div className="flex justify-between text-sm mb-1">
+
+                      <span className="capitalize">
+                        {role}
+                      </span>
+
+                      <span>
+                        {score}%
+                      </span>
+
+                    </div>
+
+                    <div className="w-full bg-muted h-2 rounded">
+
+                      <div
+                        className="bg-primary h-2 rounded"
+                        style={{ width: `${score}%` }}
+                      />
+
+                    </div>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            </motion.div>
+            <motion.div variants={itemVariants} className="sm:col-span-2">
+
+              <div className="glass-card p-6 rounded-xl">
+
+                <h2 className="text-lg font-semibold mb-4">
+                  Recommended Skills For Roles
+                </h2>
+
+                {Object.entries(roleMissing).map(([role, skills]) => (
+
+                  <div key={role} className="mb-4">
+
+                    <h3 className="font-medium capitalize mb-2">
+                      {role}
+                    </h3>
+
+                    <div className="flex flex-wrap gap-2">
+
+                      {skills.slice(0, 5).map((skill, index) => (
+
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-secondary rounded text-xs"
+                        >
+
+                          {skill}
+
+                        </span>
+
+                      ))}
+
+                    </div>
+
+                  </div>
+
+                ))}
+
+              </div>
+
             </motion.div>
           </motion.div>
         </div>

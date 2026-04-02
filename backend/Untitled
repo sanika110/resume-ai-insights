@@ -1,0 +1,29 @@
+import google.generativeai as genai
+
+genai.configure(api_key="YOUR_API_KEY")
+
+model = genai.GenerativeModel("gemini-pro")
+
+def get_ai_suggestions(text):
+
+    prompt = f"""
+
+    Analyze this resume text and give 5 professional improvement suggestions:
+
+    {text[:3000]}
+
+    Give short bullet points.
+    
+    """
+
+    try:
+
+        response = model.generate_content(prompt)
+
+        suggestions = response.text.split("\n")
+
+        return suggestions[:5]
+
+    except:
+
+        return ["AI suggestions unavailable"]
